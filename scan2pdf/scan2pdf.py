@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
-"""Scan.
+"""scan2pdf
 
 Usage:
-  scanpdf -L
-  scanpdf --create-configuration DEVICE [CONFIG]
-  scanpdf [--debug] [-C CONFIG] DEVICE [TARGET]
+  scan2pdf -L
+  scan2pdf --create-configuration DEVICE [CONFIG]
+  scan2pdf [--debug] [-C CONFIG] DEVICE [TARGET]
 
 Options:
   -L, --list-devices                     show available scanner devices
@@ -52,12 +52,22 @@ class Error(Exception):
         return self.message
 
 def main(cmdline):
-    if cmdline['--list-devices']:
-        main_list_devices(cmdline)
-    elif cmdline['--create-configuration']:
-        main_create_configuration(cmdline)
-    else:
-        main_scan(cmdline)
+    global __doc__
+    cmdline = docopt(__doc__, version='scan2pdf 0.1.0')
+
+    try:
+        if cmdline['--list-devices']:
+            main_list_devices(cmdline)
+        elif cmdline['--create-configuration']:
+            main_create_configuration(cmdline)
+        else:
+            main_scan(cmdline)
+    except Error as ex:
+        print('Error:', ex.message, file=sys.stderr)
+        if cmdline['--debug'] and hasattr(ex, 'inner'):
+            raise ex.inner
+        else:
+            sys.exit(-1)
 
 def main_list_devices(cmdline):
     try:
@@ -450,14 +460,4 @@ def images2pdf(images, filename):
     doc.build(list(iter_flowables()))
 
 if __name__ == '__main__':
-    cmdline = docopt(__doc__, version='scan 0.1.0')
-    print(cmdline)
-    exit(0)
-    try:
-        main(cmdline)
-    except Error as ex:
-        print('Error:', ex.message, file=sys.stderr)
-        if cmdline['--debug'] and hasattr(ex, 'inner'):
-            raise ex.inner
-        else:
-            sys.exit(-1)
+    main()
