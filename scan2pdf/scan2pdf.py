@@ -5,16 +5,16 @@
 Usage:
   scan2pdf -L
   scan2pdf --create-configuration DEVICE [CONFIG]
-  scan2pdf [--debug] [-C CONFIG] DEVICE [TARGET]
+  scan2pdf [--debug] [-C CONFIG] DEVICE TARGET
 
 Options:
-  -L, --list-devices                     show available scanner devices
-  DEVICE                                 device to use for scanning
-  TARGET                                 target filename for scan
-  CONFIG                                 configuration file
-  -C <CONFIG>, --configuration <CONFIG>  configuration options in JSON format
-  --debug                                print debug information on error
-  --create-configuration                 create a configuration file with defaults
+  -L, --list-devices                 show available scanner devices
+  DEVICE                             device to use for scanning
+  TARGET                             target filename for scan
+  CONFIG                             configuration file
+  -C CONFIG, --configuration CONFIG  configuration options in JSON format
+  --debug                            print debug information on error
+  --create-configuration             create a configuration file with defaults
 """
 
 import sys
@@ -51,7 +51,7 @@ class Error(Exception):
     def __str__(self):
         return self.message
 
-def main(cmdline):
+def main():
     global __doc__
     cmdline = docopt(__doc__, version='scan2pdf 0.1.0')
 
@@ -280,8 +280,8 @@ def main_create_configuration(cmdline):
     def unfix(value):
         return float(value) / (1 << 16)
 
-    if cmdline['<CONFIG>'] is not None:
-        filename = cmdline['<CONFIG>']
+    if cmdline['CONFIG'] is not None:
+        filename = cmdline['CONFIG']
         try:
             fp = open(filename, 'wt')
         except Exception as ex:

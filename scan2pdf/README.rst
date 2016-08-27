@@ -4,7 +4,7 @@ scan2pdf
 Usage:
   scan2pdf -L
   scan2pdf --create-configuration DEVICE [CONFIG]
-  scan2pdf [--debug] [-C CONFIG] DEVICE [TARGET]
+  scan2pdf [--debug] [-C CONFIG] DEVICE TARGET
 
 Options:
   -L, --list-devices                     show available scanner devices
